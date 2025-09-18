@@ -1,14 +1,19 @@
 "use client";
 
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
 import { getStudentById, updateStudent } from "@/store/student";
 
 type Props = { params: { id: string } };
 
 export default function StudentDetailClient({ params }: Props) {
-  const s = getStudentById(params.id);
+  // Next.js may pass `params` as a Promise in client components.
+  // Use `React.use()` to unwrap it when available (future-proof).
+  // Fallback to `params` for older runtimes.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const resolvedParams = (React as any).use ? (React as any).use(params) : params;
+  const s = getStudentById(resolvedParams.id);
   if (!s) return <div className="p-6">ไม่พบข้อมูลนักเรียน</div>;
   const [stu, setStu] = useState(() => s);
   const [editMode, setEditMode] = useState(false);
