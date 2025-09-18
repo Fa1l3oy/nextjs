@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { getStudents, Student } from "@/store/student";
 
 export default function TeacherPage() {
-  const [students, setStudents] = useState<Student[]>(() => getStudents());
+  const [students] = useState<Student[]>(() => getStudents());
   const [sortBy, setSortBy] = useState<"name" | "gpa">("name");
   const [dir, setDir] = useState<"asc" | "desc">("asc");
 
@@ -30,7 +30,7 @@ export default function TeacherPage() {
       <div className="mb-4 flex items-center gap-4">
         <div>
           <label className="mr-2">เรียงตาม:</label>
-          <select value={sortBy} onChange={(e) => setSortBy(e.target.value as any)} className="border p-1 rounded">
+          <select value={sortBy} onChange={(e) => setSortBy(e.target.value as "name" | "gpa")} className="border p-1 rounded">
             <option value="name">ชื่อนักเรียน</option>
             <option value="gpa">GPA</option>
           </select>

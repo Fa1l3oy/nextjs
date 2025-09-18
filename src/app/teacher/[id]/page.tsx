@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { getStudentById, updateStudent } from "@/store/student";
 
@@ -67,7 +68,9 @@ export default function StudentDetailClient({ params }: Props) {
               <h2 className="font-semibold mb-2">รูปภาพ</h2>
               <div className="flex gap-2 flex-wrap">
                 {stu.photos.map((p, i) => (
-                  <img key={i} src={p} alt={`photo-${i}`} className="w-40 h-40 object-cover rounded border" />
+                  <div key={i} className="w-40 h-40 relative rounded border overflow-hidden">
+                    <Image src={p} alt={`photo-${i}`} fill style={{ objectFit: 'cover' }} />
+                  </div>
                 ))}
               </div>
             </section>

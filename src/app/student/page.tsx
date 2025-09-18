@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { addStudent, getStudents, Student } from "@/store/student";
 
 export default function StudentPage() {
@@ -69,7 +70,7 @@ export default function StudentPage() {
     const eobj = validate();
     if (Object.keys(eobj).length) return setErrors(eobj);
 
-    const student = addStudent({
+    addStudent({
       firstName: form.firstName.trim(),
       lastName: form.lastName.trim(),
       address: form.address.trim(),
@@ -87,7 +88,7 @@ export default function StudentPage() {
       works: form.works.split('\n').map((s) => s.trim()).filter(Boolean),
     });
 
-    setSubmitted(getStudents());
+  setSubmitted(getStudents());
     setForm({
       firstName: "",
       lastName: "",
@@ -161,7 +162,9 @@ export default function StudentPage() {
           <input type="file" accept="image/*" multiple onChange={handleFiles} className="w-full" />
           <div className="flex gap-2 mt-2">
             {form.photos.map((p, i) => (
-              <img key={i} src={p} alt={`photo-${i}`} className="w-24 h-24 object-cover rounded border" />
+              <div key={i} className="w-24 h-24 relative rounded border overflow-hidden">
+                <Image src={p} alt={`photo-${i}`} fill style={{ objectFit: 'cover' }} />
+              </div>
             ))}
           </div>
         </div>
