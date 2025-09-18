@@ -14,22 +14,24 @@ export default function StudentDetailClient({ params }: Props) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const resolvedParams = (React as any).use ? (React as any).use(params) : params;
   const s = getStudentById(resolvedParams.id);
-  if (!s) return <div className="p-6">ไม่พบข้อมูลนักเรียน</div>;
+  // Initialize hooks unconditionally. Use `s` values when available, otherwise defaults.
   const [stu, setStu] = useState(() => s);
   const [editMode, setEditMode] = useState(false);
   const [form, setForm] = useState(() => ({
-    firstName: s.firstName,
-    lastName: s.lastName,
-    address: s.address || "",
-    phone: s.phone || "",
-    school: s.school || "",
-    gpa: String(s.gpa ?? ""),
-    specialSkills: s.specialSkills || "",
-    reason: s.reason || "",
-    majorChoice: s.majorChoice || "",
-    university: s.university || "",
-    teacherName: s.teacherName || "",
+    firstName: s?.firstName ?? "",
+    lastName: s?.lastName ?? "",
+    address: s?.address ?? "",
+    phone: s?.phone ?? "",
+    school: s?.school ?? "",
+    gpa: String(s?.gpa ?? ""),
+    specialSkills: s?.specialSkills ?? "",
+    reason: s?.reason ?? "",
+    majorChoice: s?.majorChoice ?? "",
+    university: s?.university ?? "",
+    teacherName: s?.teacherName ?? "",
   }));
+
+  if (!stu) return <div className="p-6">ไม่พบข้อมูลนักเรียน</div>;
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
@@ -37,8 +39,8 @@ export default function StudentDetailClient({ params }: Props) {
   }
 
   function save() {
-    if (!s) return;
-    const updated = updateStudent(s.id, {
+  if (!stu) return;
+  const updated = updateStudent(stu.id, {
       firstName: form.firstName.trim(),
       lastName: form.lastName.trim(),
       address: form.address.trim(),
@@ -61,7 +63,7 @@ export default function StudentDetailClient({ params }: Props) {
     <div className="p-6 max-w-3xl mx-auto">
       <div className="mb-4 flex items-center justify-between">
         <Link href="/" className="text-sm text-blue-600 underline">ไปหน้าหลัก</Link>
-        <h1 className="text-2xl font-bold">{s.firstName} {s.lastName}</h1>
+  <h1 className="text-2xl font-bold">{stu.firstName} {stu.lastName}</h1>
       </div>
 
       {!editMode ? (
